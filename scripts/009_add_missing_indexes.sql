@@ -1,0 +1,9 @@
+-- Add missing indexes for better query performance
+CREATE INDEX IF NOT EXISTS idx_campaign_leads_campaign_id ON campaign_leads(campaign_id);
+CREATE INDEX IF NOT EXISTS idx_campaign_leads_lead_id ON campaign_leads(lead_id);
+CREATE INDEX IF NOT EXISTS idx_email_tracking_campaign_id ON email_tracking(campaign_id);
+CREATE INDEX IF NOT EXISTS idx_email_tracking_lead_id ON email_tracking(lead_id);
+CREATE INDEX IF NOT EXISTS idx_email_tracking_sent_at ON email_tracking(sent_at);
+CREATE INDEX IF NOT EXISTS idx_leads_user_id ON leads(user_id);
+CREATE INDEX IF NOT EXISTS idx_campaigns_user_id ON campaigns(user_id);
+CREATE INDEX IF NOT EXISTS idx_campaigns_status ON campaigns(status);

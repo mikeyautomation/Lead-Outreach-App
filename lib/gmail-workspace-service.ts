@@ -36,10 +36,15 @@ class GmailWorkspaceService {
     console.log("[v0] Raw GMAIL_WORKSPACE_ACCOUNTS value:", accountsData.substring(0, 100) + "...")
 
     try {
-      const normalizedJson = accountsData.replace(/'/g, '"')
-      console.log("[v0] Normalized JSON:", normalizedJson.substring(0, 100) + "...")
-
-      const parsed = JSON.parse(normalizedJson)
+      let parsed: any
+      try {
+        parsed = JSON.parse(accountsData)
+      } catch (parseError) {
+        // Try normalizing single quotes to double quotes as fallback
+        const normalizedJson = accountsData.replace(/'/g, '"')
+        console.log("[v0] Attempting to parse with normalized quotes...")
+        parsed = JSON.parse(normalizedJson)
+      }
 
       if (!Array.isArray(parsed)) {
         throw new Error("GMAIL_WORKSPACE_ACCOUNTS must be a JSON array")
@@ -48,6 +53,12 @@ class GmailWorkspaceService {
       this.accounts = parsed.map((account: any, index: number) => {
         if (!account.email || !account.password) {
           throw new Error(`Account at index ${index} is missing required fields (email, password)`)
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(account.email)) {
+          throw new Error(`Account at index ${index} has invalid email format: ${account.email}`)
         }
 
         return {

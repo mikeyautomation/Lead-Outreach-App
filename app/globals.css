@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Removed tw-animate-css import and added proper Tailwind v4 configuration */
+/* Removed invalid tw-animate-css import that was causing build errors */
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

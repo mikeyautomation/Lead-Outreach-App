@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import { CreateCampaignForm } from "@/components/create-campaign-form"
 
 export default async function NewCampaignPage() {
@@ -25,13 +26,15 @@ export default async function NewCampaignPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Create Campaign</h1>
-        <p className="text-muted-foreground mt-2">Set up a new email outreach campaign with follow-up sequences.</p>
-      </div>
+    <DashboardLayout currentPage="campaigns">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Create Campaign</h1>
+          <p className="text-muted-foreground mt-2">Set up a new email outreach campaign with follow-up sequences.</p>
+        </div>
 
-      <CreateCampaignForm leads={leads || []} />
-    </div>
+        <CreateCampaignForm leads={leads || []} />
+      </div>
+    </DashboardLayout>
   )
 }

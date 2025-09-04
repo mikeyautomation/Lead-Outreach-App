@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import { CampaignsTable } from "@/components/campaigns-table"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -27,21 +28,23 @@ export default async function CampaignsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Campaigns</h1>
-          <p className="text-muted-foreground mt-2">Create and manage your email outreach campaigns.</p>
+    <DashboardLayout currentPage="campaigns">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Campaigns</h1>
+            <p className="text-muted-foreground mt-2">Create and manage your email outreach campaigns.</p>
+          </div>
+          <Button asChild>
+            <Link href="/dashboard/campaigns/new">
+              <Plus className="h-4 w-4 mr-2" />
+              New Campaign
+            </Link>
+          </Button>
         </div>
-        <Button asChild>
-          <Link href="/dashboard/campaigns/new">
-            <Plus className="h-4 w-4 mr-2" />
-            New Campaign
-          </Link>
-        </Button>
-      </div>
 
-      <CampaignsTable campaigns={campaigns || []} />
-    </div>
+        <CampaignsTable campaigns={campaigns || []} />
+      </div>
+    </DashboardLayout>
   )
 }

@@ -117,55 +117,47 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
-
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 
   /* Enhanced checkbox visibility and styling */
   [data-radix-checkbox-root] {
-    @apply h-5 w-5 border-2 border-primary/60 bg-background rounded-sm;
+    @apply border-2 border-primary/60 bg-background;
   }
 
   [data-radix-checkbox-root][data-state="checked"] {
-    @apply bg-primary border-primary text-primary-foreground;
+    @apply bg-primary border-primary;
   }
 
   [data-radix-checkbox-root]:hover {
-    @apply border-primary bg-primary/10;
+    @apply border-primary bg-primary/5;
   }
 
+  /* Better focus states for accessibility */
   [data-radix-checkbox-root]:focus-visible {
     @apply ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
-  /* Enhanced navigation and layout styling */
-  .dashboard-nav-link {
-    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200;
-  }
-
-  .dashboard-nav-link.active {
-    @apply bg-primary text-primary-foreground shadow-sm;
-  }
-
-  .dashboard-nav-link:not(.active) {
-    @apply text-muted-foreground hover:text-foreground hover:bg-muted;
-  }
-
-  /* Better card styling */
-  .dashboard-card {
-    @apply bg-card border border-border rounded-lg shadow-sm;
-  }
-
-  /* Enhanced button styling */
-  .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 border-primary;
-  }
-
+  /* Enhanced button and input visibility */
   .btn-outline {
-    @apply border-2 border-border hover:border-primary/60 hover:bg-primary/5;
+    @apply border-2 border-border hover:border-primary/60;
+  }
+
+  /* Better text contrast in cards */
+  .card {
+    @apply shadow-sm border border-border/60;
+  }
+
+  /* Improved spacing and readability */
+  .lead-item {
+    @apply p-4 border border-border rounded-lg bg-card hover:bg-muted/30 transition-all duration-200;
+  }
+
+  /* Enhanced dark mode transitions */
+  .dark * {
+    @apply transition-colors duration-200;
   }
 }

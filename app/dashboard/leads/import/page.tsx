@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import { CSVImportForm } from "@/components/csv-import-form"
 
 export default async function ImportLeadsPage() {
@@ -14,13 +15,15 @@ export default async function ImportLeadsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Import Leads</h1>
-        <p className="text-muted-foreground mt-2">Upload a CSV file to bulk import your leads.</p>
-      </div>
+    <DashboardLayout currentPage="leads">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Import Leads</h1>
+          <p className="text-muted-foreground mt-2">Upload a CSV file to bulk import your leads.</p>
+        </div>
 
-      <CSVImportForm />
-    </div>
+        <CSVImportForm />
+      </div>
+    </DashboardLayout>
   )
 }

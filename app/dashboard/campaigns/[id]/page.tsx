@@ -1,5 +1,6 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import { EditCampaignForm } from "@/components/edit-campaign-form"
 
 interface CampaignDetailPageProps {
@@ -49,13 +50,15 @@ export default async function CampaignDetailPage({ params }: CampaignDetailPageP
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Edit Campaign</h1>
-        <p className="text-muted-foreground mt-2">Update your campaign settings and content.</p>
-      </div>
+    <DashboardLayout currentPage="campaigns">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Edit Campaign</h1>
+          <p className="text-muted-foreground mt-2">Update your campaign settings and content.</p>
+        </div>
 
-      <EditCampaignForm campaign={campaign} campaignLeads={campaignLeads || []} />
-    </div>
+        <EditCampaignForm campaign={campaign} campaignLeads={campaignLeads || []} />
+      </div>
+    </DashboardLayout>
   )
 }

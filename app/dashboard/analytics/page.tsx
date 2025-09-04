@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import { AnalyticsDashboard } from "@/components/analytics-dashboard"
 
 export default async function AnalyticsPage() {
@@ -50,20 +51,22 @@ export default async function AnalyticsPage() {
   const campaignLeads = campaignLeadsResult.data || []
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
-        <p className="text-muted-foreground mt-2">
-          Comprehensive insights into your lead outreach performance and trends.
-        </p>
-      </div>
+    <DashboardLayout currentPage="analytics">
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
+          <p className="text-muted-foreground mt-2">
+            Comprehensive insights into your lead outreach performance and trends.
+          </p>
+        </div>
 
-      <AnalyticsDashboard
-        leads={leads}
-        campaigns={campaigns}
-        emailTracking={emailTracking}
-        campaignLeads={campaignLeads}
-      />
-    </div>
+        <AnalyticsDashboard
+          leads={leads}
+          campaigns={campaigns}
+          emailTracking={emailTracking}
+          campaignLeads={campaignLeads}
+        />
+      </div>
+    </DashboardLayout>
   )
 }

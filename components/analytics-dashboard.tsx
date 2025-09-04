@@ -84,8 +84,8 @@ interface AnalyticsDashboardProps {
 
 export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLeads }: AnalyticsDashboardProps) {
   const [timeRange, setTimeRange] = useState("30")
+  const [isExporting, setIsExporting] = useState(false)
 
-  // Filter data based on time range
   const filteredData = useMemo(() => {
     const days = Number.parseInt(timeRange)
     const cutoffDate = new Date()
@@ -99,7 +99,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
     }
   }, [leads, campaigns, emailTracking, campaignLeads, timeRange])
 
-  // Calculate key metrics
   const metrics = useMemo(() => {
     const totalLeads = filteredData.leads.length
     const totalCampaigns = filteredData.campaigns.length
@@ -112,7 +111,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
     const clickRate = totalEmailsSent > 0 ? Math.round((totalClicked / totalEmailsSent) * 100) : 0
     const replyRate = totalEmailsSent > 0 ? Math.round((totalReplied / totalEmailsSent) * 100) : 0
 
-    // Lead status distribution
     const leadsByStatus = filteredData.leads.reduce(
       (acc, lead) => {
         acc[lead.status] = (acc[lead.status] || 0) + 1
@@ -121,7 +119,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
       {} as Record<string, number>,
     )
 
-    // Lead source distribution
     const leadsBySource = filteredData.leads.reduce(
       (acc, lead) => {
         acc[lead.source] = (acc[lead.source] || 0) + 1
@@ -130,7 +127,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
       {} as Record<string, number>,
     )
 
-    // Industry distribution
     const leadsByIndustry = filteredData.leads.reduce(
       (acc, lead) => {
         const industry = lead.industry || "Unknown"
@@ -156,7 +152,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
     }
   }, [filteredData])
 
-  // Generate time series data
   const timeSeriesData = useMemo(() => {
     const days = Number.parseInt(timeRange)
     const data = []
@@ -194,7 +189,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
     return data
   }, [filteredData, timeRange])
 
-  // Campaign performance data
   const campaignPerformanceData = useMemo(() => {
     return filteredData.campaigns
       .map((campaign) => ({
@@ -209,7 +203,6 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
       .slice(0, 10) // Show top 10 campaigns
   }, [filteredData.campaigns])
 
-  // Pie chart data
   const leadStatusData = Object.entries(metrics.leadsByStatus).map(([status, count]) => ({
     name: status.charAt(0).toUpperCase() + status.slice(1),
     value: count,
@@ -271,6 +264,53 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
     },
   ]
 
+  const handleExport = async (format: "csv" | "json") => {
+    setIsExporting(true)
+    try {
+      const response = await fetch("/api/analytics/export", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          timeRange,
+          format,
+        }),
+      })
+
+      if (response.ok) {
+        if (format === "csv") {
+          const blob = await response.blob()
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement("a")
+          a.href = url
+          a.download = `analytics-report-${timeRange}days.csv`
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+          document.body.removeChild(a)
+        } else {
+          const data = await response.json()
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement("a")
+          a.href = url
+          a.download = `analytics-report-${timeRange}days.json`
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+          document.body.removeChild(a)
+        }
+      } else {
+        console.error("Export failed")
+      }
+    } catch (error) {
+      console.error("Export error:", error)
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Time Range Selector */}
@@ -289,10 +329,16 @@ export function AnalyticsDashboard({ leads, campaigns, emailTracking, campaignLe
             </SelectContent>
           </Select>
         </div>
-        <Button variant="outline" size="sm">
-          <Download className="h-4 w-4 mr-2" />
-          Export Report
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={() => handleExport("csv")} disabled={isExporting}>
+            <Download className="h-4 w-4 mr-2" />
+            {isExporting ? "Exporting..." : "Export CSV"}
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => handleExport("json")} disabled={isExporting}>
+            <Download className="h-4 w-4 mr-2" />
+            {isExporting ? "Exporting..." : "Export JSON"}
+          </Button>
+        </div>
       </div>
 
       {/* Key Metrics */}

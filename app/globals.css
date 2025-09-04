@@ -122,3 +122,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Added proper checkbox visibility styles */
+@layer components {
+  .checkbox-visible {
+    @apply border-2 border-primary bg-background;
+  }
+
+  .checkbox-visible:checked {
+    @apply bg-primary border-primary;
+  }
+
+  .checkbox-visible:focus {
+    @apply ring-2 ring-ring ring-offset-2;
+  }
+}

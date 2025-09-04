@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { DashboardLayout } from "@/components/dashboard-layout"
 import { AddLeadForm } from "@/components/add-lead-form"
 
 export default async function NewLeadPage() {
@@ -15,15 +14,13 @@ export default async function NewLeadPage() {
   }
 
   return (
-    <DashboardLayout currentPage="leads">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Add New Lead</h1>
-          <p className="text-muted-foreground mt-2">Enter the contact information for your new lead.</p>
-        </div>
-
-        <AddLeadForm />
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Add New Lead</h1>
+        <p className="text-muted-foreground mt-2">Enter the contact information for your new lead.</p>
       </div>
-    </DashboardLayout>
+
+      <AddLeadForm />
+    </div>
   )
 }

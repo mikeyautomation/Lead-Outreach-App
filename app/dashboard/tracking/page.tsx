@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { DashboardLayout } from "@/components/dashboard-layout"
 import { EmailTrackingDashboard } from "@/components/email-tracking-dashboard"
 
 export default async function EmailTrackingPage() {
@@ -49,15 +48,13 @@ export default async function EmailTrackingPage() {
   }
 
   return (
-    <DashboardLayout currentPage="tracking">
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Email Tracking</h1>
-          <p className="text-muted-foreground mt-2">Monitor email performance and engagement metrics.</p>
-        </div>
-
-        <EmailTrackingDashboard emailTracking={emailTracking || []} campaigns={campaigns || []} />
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Email Tracking</h1>
+        <p className="text-muted-foreground mt-2">Monitor email performance and engagement metrics.</p>
       </div>
-    </DashboardLayout>
+
+      <EmailTrackingDashboard emailTracking={emailTracking || []} campaigns={campaigns || []} />
+    </div>
   )
 }

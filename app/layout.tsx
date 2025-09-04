@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
+import { DashboardLayout } from "@/components/dashboard-layout"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -34,7 +35,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            {children}
+            <DashboardLayout>{children}</DashboardLayout>
           </ThemeProvider>
         </Suspense>
         <Analytics />

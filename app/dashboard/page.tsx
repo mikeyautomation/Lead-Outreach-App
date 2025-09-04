@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, Target, Mail, TrendingUp } from "lucide-react"
+import { DashboardLayout } from "@/components/dashboard-layout"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -58,7 +58,7 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <DashboardLayout>
+    <DashboardLayout currentPage="dashboard">
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>

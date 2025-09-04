@@ -1,6 +1,5 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { DashboardLayout } from "@/components/dashboard-layout"
 import { EditLeadForm } from "@/components/edit-lead-form"
 
 interface LeadDetailPageProps {
@@ -31,15 +30,13 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
   }
 
   return (
-    <DashboardLayout currentPage="leads">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Edit Lead</h1>
-          <p className="text-muted-foreground mt-2">Update the contact information for this lead.</p>
-        </div>
-
-        <EditLeadForm lead={lead} />
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Edit Lead</h1>
+        <p className="text-muted-foreground mt-2">Update the contact information for this lead.</p>
       </div>
-    </DashboardLayout>
+
+      <EditLeadForm lead={lead} />
+    </div>
   )
 }
